@@ -14,6 +14,7 @@ Streamstone is a small library targeted at building scalable event-sourced appli
 + Synchronous (inline) projections and snapshots
 + Change tracking support for inline projections
 + Friendly for multi-tenant designs
++ Sharding support (jump consistent hashing)
 
 ## Installing from NuGet [![NuGet](https://img.shields.io/nuget/v/Streamstone.svg?style=flat)](https://www.nuget.org/packages/Streamstone/)
 
@@ -35,7 +36,7 @@ Streamstone is just a thin layer (library, not a server) on top of Windows Azure
 
 The api is stateless and all exposed objects are immutable, once fully constructed. Streamstone doesn't dictate payload serialization protocol, so you are free to choose any protocol you want.
 
-Optimistic concurrency is implemented by making version part of RowKey identifier. Duplicate event detection is done by automatically creating additional entity for every event, with RowKey value set to a unique identifier of a source event (consistent secondary index).     
+Optimistic concurrency is implemented by always including stream header entity with every write, making it impossible to append to a stream without first having a latest Etag. Duplicate event detection is done by automatically creating additional entity for every event, with RowKey value set to a unique identifier of a source event (consistent secondary index).     
 
 ## Schema
 
@@ -43,7 +44,7 @@ Optimistic concurrency is implemented by making version part of RowKey identifie
 
 ---
 
-<a href="https://raw.githubusercontent.com/yevhen/Streamstone/master/Schema_VP.png" target="_blank" title="Click to view full size"><img src="https://raw.githubusercontent.com/yevhen/Streamstone/master/Doc/Schema_VP.png" alt="Schema for virtual partitions" style="max-width:100%;"/></a>
+<a href="https://raw.githubusercontent.com/yevhen/Streamstone/master/Doc/Schema_VP.png" target="_blank" title="Click to view full size"><img src="https://raw.githubusercontent.com/yevhen/Streamstone/master/Doc/Schema_VP.png" alt="Schema for virtual partitions" style="max-width:100%;"/></a>
 
 ## Usage
 
@@ -93,4 +94,4 @@ Other limitations of the underlying Azure Table Storage API:
 
 ## License
 
-Apache 2 License
+MIT License
